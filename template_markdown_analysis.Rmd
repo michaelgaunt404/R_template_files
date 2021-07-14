@@ -1,0 +1,73 @@
+---
+title: "Title"
+subtitle: "Subtitle"
+author: "Mike Gaunt"
+date: "`r Sys.Date()`"
+output: github_document
+knit: (function(inputFile, encoding) { rmarkdown::render(inputFile, encoding = encoding, output_file = paste0(substr(inputFile,1,nchar(inputFile)-4),Sys.Date(),'.html')) })
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  cache = FALSE, cache.lazy = FALSE, autodep = TRUE, warning = FALSE, 
+  message = FALSE, echo = TRUE, dpi = 180,
+  fig.width = 8, fig.height = 5, echo = FALSE
+  )
+```
+
+```{r include=FALSE}
+#library set-up=================================================================
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# library(tidyverse)
+```
+
+```{r include=FALSE}
+#file sourcing==================================================================
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# list(
+#   "source_1.R",
+#   "source_2.R"
+# ) %>%  
+#   map(~here(.x) %>% 
+#         source())
+```
+
+```{r include=FALSE}
+#data set-up====================================================================
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+data_file = "CA_KC_ConditionHistory_20210510.xlsx"
+
+data_file_path = data_file %>%
+  paste0("data/", .) %>%
+  here()
+
+systems_list = read_xlsx(
+  data_file_path,
+  sheet = "SystemList",
+  skip = 2)
+```
+
+```{r}
+#var defintion==================================================================
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+```
+
+```{r}
+#custom function defintion======================================================
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+```
+
+
+# Introduction/Summary
+  
+# Intended Work Flow
+
+Placeholder.
+
+# Validation Operations
+
+This section compares the system rating values which are listed in the 2016 TFCNR against the system rating list that is in **`r data_file`**.
+
+
+
+
