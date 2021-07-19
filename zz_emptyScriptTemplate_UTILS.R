@@ -1,12 +1,11 @@
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# This is a utility script that holds custom functions 
+# This is a utility script that holds custom functions
 #
 # By: mike gaunt, michael.gaunt@wsp.com
 #
 # README: [[insert brief readme here]]
 #-------- [[insert brief readme here]]
-#
 # *please use 80 character margins
 # *please save as helpers_[[informative description]]
 #
