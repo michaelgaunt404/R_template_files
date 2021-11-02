@@ -29,7 +29,7 @@ dgt2 = function(x){
 
 #DT specific====================================================================
 #makes all NAs in datatable be visible
-options(htmlwidgets.TOJSON_ARGS = list(na = 'string'))
+# options(htmlwidgets.TOJSON_ARGS = list(na = 'string'))
 
 
 #creats DT readable icons
@@ -47,6 +47,15 @@ onclick_quick = function(column){
 # }
 
 #dt style
+dt_rndr_lngth_opts = list(
+  list(
+    targets = "_all", render = DT::JS(
+      "function(data, type, row, meta) {",
+      "return type === 'display' && data.length > 25 ?",
+      "'<span title=\"' + data + '\">' + data.substr(0, 25) + '...</span>' : data;",
+      "}")
+  ))
+
 dt_font_opts = DT::JS(
   "function(settings, json) {",
   "$('body').css({'font-family': 'Calibri'});",
@@ -74,7 +83,10 @@ pretty_col_names = function(df){
 }
 
 #makes standard DT with a few inputs
-dt_common = function(df, y = NA, pl = 10, dom = "Blftipr", sel = "none", but = c("copy", "csv"), edit = NA, width = '100%', x = T){
+dt_common = function(df, y = NA, pl = 10, dom = "Blftipr", sel = "none",
+                     but = c("copy", "csv"), edit = NA, width = '100%', x = T,
+                     filter = "none"#, coldef = dt_rndr_lngth_opts
+                     ){
   #https://datatables.net/reference/option/dom
 
   df %>%
@@ -85,6 +97,7 @@ dt_common = function(df, y = NA, pl = 10, dom = "Blftipr", sel = "none", but = c
                   width = width,
                   selection = sel,
                   editable = edit,
+                  filter = filter,
                   extensions = c('Buttons'),
                   options = list(
                     pageLength = pl,
@@ -93,8 +106,25 @@ dt_common = function(df, y = NA, pl = 10, dom = "Blftipr", sel = "none", but = c
                     dom = dom,
                     buttons = but,
                     initComplete = dt_font_opts
+                    # ,
+                    # columnDefs =  list(list(
+                    #   targets = "_all",render = JS(
+                    #     "function(data, type, row, meta) {",
+                    #     "return type === 'display' && data.length > 2 ?",
+                    #     "'<span title=\"' + data + '\">' + data.substr(0, 2) + '...</span>' : data;",
+                    #     "}")
+                    # ))
                   ))
 }
 
 
+
+
 #end
+
+
+
+
+
+
+

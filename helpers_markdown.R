@@ -24,9 +24,7 @@ function_name <- function(input_1, input_2) {
 #Flex===========================================================================
 #use this header to make demarcations/section in code [delete this line]
 #short description
-
-#this is a convenience function that performs this script but without having to open it
-knit_dashboard =  function(dashboard_name, dashboard_folder,
+knit_dashboard =  function(dashboard_name = "dashboard", dashboard_folder,
                            doc_name = dashboard_name, overwrite = F){
   dashboard_path_rmd = stringr::str_glue("{dashboard_folder}{dashboard_name}.Rmd")
   dashboard_path_html = stringr::str_glue("{dashboard_folder}{dashboard_name}.html")
@@ -43,8 +41,25 @@ knit_dashboard =  function(dashboard_name, dashboard_folder,
 
 }
 
+#Markdown=======================================================================
+#use this header to make demarcations/section in code [delete this line]
+#short description
+knit_markdown =  function(markdown_name, markdown_folder = "analysis/",
+                           doc_name = markdown_name, overwrite = F,
+                          write_to_folder = "public"){
+  markdown_path_rmd = stringr::str_glue("{markdown_folder}{markdown_name}.Rmd")
+  markdown_path_html = stringr::str_glue("{markdown_folder}{markdown_name}.html")
 
+  if (overwrite) {
+    file_rename = stringr::str_glue("{write_to_folder}/{doc_name}.html")
+  } else {
+    file_rename = stringr::str_glue("{write_to_folder}/{doc_name}_{Sys.Date()}.html")
+  }
 
+  rmarkdown::render(markdown_path_rmd)
+  file.rename(markdown_path_html,
+              file_rename)
 
+}
 
 #script end=====================================================================

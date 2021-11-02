@@ -13,16 +13,83 @@
 #reads all csvs using data.table::fread()
 #removes zero variance columns
 #and cleans names
-read_csv_allFiles <- function(file_list, extra_path) {
+# read_csv_allFiles <- function(file_list, extra_path) {
+#   data_list =
+#     file_list %>%
+#     paste0(here(), extra_path, .) %>%
+#     map(~data.table::fread(.x) %>%
+#           na_if("NULL") %>%
+#           janitor::remove_empty("cols") %>%
+#           janitor::clean_names()
+#     )
+#   names(data_list) = file_list
+#   data_list
+# }
+
+read_csv_allFiles <- function(data_location = "./data/", specifically = NULL, clean = F, clean_string = NULL) {
+  file_list = list.files(data_location) %>%
+    .[str_detect(., "csv")] %>%
+    paste0(data_location, .) %>%
+    { if (!is.null(specifically)) (.) %>% .[str_detect(., specifically)] else .}
+
+  if (clean){
+    data_list =
+      file_list %>%
+      map(~data.table::fread(.x) %>%
+            na_if("NULL") %>%
+            janitor::remove_empty("cols") %>%
+            janitor::clean_names()
+      )
+  } else {
+    data_list =
+      file_list %>%
+      map(~data.table::fread(.x)
+      )
+  }
+
+  if (!is.null(clean_string)) {
+    names(data_list) = file_list %>%
+      map(~str_remove(.x, data_location) %>%
+            str_remove(".csv") %>%
+            gsub(str_glue("{clean_string}.*"), "\\1", .))
+  } else {
+    names(data_list) = file_list
+  }
+
+  data_list
+}
+
+#reads all xlsx using readxl package
+read_xlsx_allFiles <- function(data_location = "./data/", specifically = NULL, clean = F, clean_string = NULL) {
+  file_list = list.files(data_location) %>%
+    .[str_detect(., "xlsx")] %>%
+    paste0(data_location, .) %>%
+    { if (!is.null(specifically)) (.) %>% .[str_detect(., specifically)] else .}
+
+  if (clean){
   data_list =
     file_list %>%
-    paste0(here(), extra_path, .) %>%
-    map(~data.table::fread(.x) %>%
+    map(~readxl::read_xlsx(.x) %>%
           na_if("NULL") %>%
           janitor::remove_empty("cols") %>%
           janitor::clean_names()
     )
-  names(data_list) = file_list
+  } else {
+    data_list =
+      file_list %>%
+      map(~readxl::read_xlsx(.x)
+      )
+  }
+
+  if (!is.null(clean_string)) {
+    names(data_list) = file_list %>%
+      map(~str_remove(.x, data_location) %>%
+            str_remove(".csv") %>%
+            gsub(str_glue("{clean_string}.*"), "\\1", .))
+  } else {
+    names(data_list) = file_list
+  }
+
   data_list
 }
 
@@ -67,6 +134,10 @@ pretty_char = function(col){
   col %>%
     stringr::str_replace_all(., "_", " ") %>%
     stringr::str_to_title(.)
+}
+
+dgt0 = function(x){
+  round(x, 0)
 }
 
 dgt2 = function(x){
